@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import axios from "axios";
 import EditBrand from "./EditBrand";
 import { useNavigate } from "react-router-dom";
+import MasterContext from "./MasterContext";
 export default function Brand(){
    const [brandList,setBrandList] = useState([]);
-   const [categoryList,setCategoryList] = useState([]);
-   
+   const {categoryList} = useContext(MasterContext);   
    const [categoryErrorMessage, setCategoryErrorMessage] = useState(false);
    const [brandErrorMessage,setBrandErrorMessage] = useState(false);
    const [categoryStatus,setCategoryStatus]=useState(false);
@@ -16,23 +16,12 @@ export default function Brand(){
    const navigate = useNavigate();
     useEffect(()=>{
       loadBrands();
-      loadCategories();
     },[]);
 
     const loadBrands = async ()=>{
       let response =  await axios.get("http://localhost:3000/brand/all-brand");
       if(response.data.status)
         setBrandList(response.data.brandList);
-    }
-    const loadCategories = async () => {
-      try {
-          let response = await axios.get("http://localhost:3000/category/list");
-          if (response.data.status)
-              setCategoryList(response.data.result);
-      }
-      catch (err) {
-          console.log(err);
-      }
     }
     const checkForCategory = (event)=>{
        if(event.target.value == "0"){
@@ -93,6 +82,20 @@ export default function Brand(){
           </div>
         </div>
       </form>
+      {brandList.length==0 ?
+        <div className="text-center">
+            <div class="spinner-grow text-muted"></div>
+            <div class="spinner-grow text-primary"></div>
+            <div class="spinner-grow text-success"></div>
+            <div class="spinner-grow text-info"></div>
+            <div class="spinner-grow text-warning"></div>
+            <div class="spinner-grow text-danger"></div>
+            <div class="spinner-grow text-secondary"></div>
+            <div class="spinner-grow text-dark"></div>
+            <div class="spinner-grow text-light"></div>
+        </div>
+        :"" 
+       }
       <table className="table mt-5">
         <thead>
           <tr>

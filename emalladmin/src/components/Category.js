@@ -1,23 +1,11 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import AddCategory from "./AddCategory";
+import MasterContext from "./MasterContext";
 
-export default function Category() {
-    const [categoryList, setCategoryList] = useState([]);
+export default function Category({setCategoryList}) {
     const categoryField = useRef();
-    useEffect(() => {
-        loadCategories();
-    }, [])
-    const loadCategories = async () => {
-        try {
-            let response = await axios.get("http://localhost:3000/category/list");
-            if (response.data.status)
-                setCategoryList(response.data.result);
-        }
-        catch (err) {
-            console.log(err);
-        }
-    }
+    const {categoryList} = useContext(MasterContext);
     const saveCategory = async (event)=>{
         event.preventDefault();
         let catName = categoryField.current.value;

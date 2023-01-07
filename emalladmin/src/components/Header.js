@@ -25,9 +25,15 @@ export default function Header(){
                   </Link>
                 </li>
                 <li className="tm-nav-item active">
+                  <Link to="/product-list" className="tm-nav-link">
+                    <i className="fas fa-home"></i>
+                    Product List
+                  </Link>
+                </li>
+                <li className="tm-nav-item active">
                   <Link to="/product" className="tm-nav-link">
                     <i className="fas fa-home"></i>
-                    Products
+                    Add Product
                   </Link>
                 </li>
             </ul>
