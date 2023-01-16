@@ -31,6 +31,7 @@ const FeaturedProduct = ()=>{
           }
         }
         catch(error){
+          console.log(error);
           toast.error("Oops! something went wrong..");
         }
       }  

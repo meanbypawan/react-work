@@ -15,6 +15,7 @@ import Signup from "./components/Signup";
 import 'react-toastify/dist/ReactToastify.css';
 import ViewCart from "./components/ViewCart";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Checkout from "./components/Checkout";
 const App = ()=>{
   const dispatch = useDispatch();
   useEffect(()=>{
@@ -29,6 +30,7 @@ const App = ()=>{
          <Route path="signin" element={<Signin/>}/>
          <Route path="signup" element={<Signup/>}/>
          <Route path="view-cart" element={<ProtectedRoute><ViewCart/></ProtectedRoute>}/>
+         <Route path="checkout" element={<ProtectedRoute><Checkout/></ProtectedRoute>}></Route>
        </Routes>
      <Footer/>
   </>

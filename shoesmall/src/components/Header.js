@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { logOut } from "../reduxconfig/UserSlice";
-
+import { clearCart } from "../reduxconfig/CartSlice";
 const Header = ()=>{
     const {isLoggedIn} = useSelector(state=>state.user.value);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const signout = ()=>{
+       dispatch(clearCart());
        dispatch(logOut());
        navigate("signin");
     }

@@ -12,13 +12,31 @@ const slice = createSlice({
         value:{
             cartList: [],
             isLoading: false,
-            error: ""
+            error: "",
+            totalBillAmount: 0
         }
     },
     reducers:{
+        clearCart: (state,action)=>{
+             state.value.cartList = [];
+             state.value.totalBillAmount = 0;
+        },
         updateCart: (state,action)=>{
-          //state.value.cartList = [...state.value.cartList, action.payload];
-          state.value.cartList.push(action.payload);
+          let product = JSON.parse(JSON.stringify(action.payload));
+          product.qty = 1;
+          product.total = product.productPrice;
+          state.value.totalBillAmount = state.value.totalBillAmount + product.productPrice*1;
+          state.value.cartList.push(product);
+        },
+        changeQty: (state,action)=>{
+           let item = state.value.cartList[action.payload.index];
+           item.qty = action.payload.qty;
+           item.total = item.productPrice * item.qty;
+           state.value.cartList.splice(action.payload.index,1,item);
+           state.value.totalBillAmount = 0;
+           state.value.cartList.forEach(element=>{
+             state.value.totalBillAmount += element.total*1;
+           }) 
         }
     },
     extraReducers: (builder)=>{
@@ -26,7 +44,15 @@ const slice = createSlice({
            state.value.isLoading = true;
         });
         builder.addCase(fetchCart.fulfilled,(state,action)=>{
-            state.value.cartList = action.payload;
+            
+            let itemList = action.payload;
+            itemList.forEach(element => {
+                element.qty = 1;
+                element.total = element.productPrice;
+                state.value.totalBillAmount += element.productPrice*1;    
+                state.value.cartList.push(element);
+            });
+
             state.value.isLoading = false
         });
         builder.addCase(fetchCart.rejected,(state,action)=>{
@@ -36,5 +62,5 @@ const slice = createSlice({
         })
     }
 })
-export const {updateCart} = slice.actions;
+export const {updateCart, changeQty, clearCart} = slice.actions;
 export default slice.reducer;
