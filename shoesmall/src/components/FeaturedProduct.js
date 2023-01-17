@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { updateCart } from "../reduxconfig/CartSlice";
 import WebApi from "../services/WebApi";
@@ -8,9 +9,13 @@ const FeaturedProduct = ()=>{
     const {productList, error, isLoading} =  useSelector(state=>state.product.value);
     const {brandList}  = useSelector(state=>state.brand.value);
     const {isLoggedIn, user} = useSelector(state=>state.user.value);
+    const {dataMessage} = useSelector(state=>state.message.value);
+    const [message, setMessage] = useState("");
     const {cartList} = useSelector(state=>state.cart.value);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    
     const addToCart = async (product)=>{
      if(isLoggedIn){
         let status = true;
@@ -43,6 +48,7 @@ const FeaturedProduct = ()=>{
      <ToastContainer/>
      <div id="project" className="project">
          <div className="container">
+           {dataMessage && <h2 className="bg-danger text-white">{dataMessage}</h2>} 
            <div className="titlepage">
                      <h2>Popular Brands</h2>
             </div>

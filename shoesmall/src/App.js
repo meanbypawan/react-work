@@ -7,7 +7,7 @@ import Header from "./components/Header";
 import Home from "./components/Home";
 import WebService from "./services/WebService";
 import Api from './services/WebApi';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchProduct } from "./reduxconfig/ProductSlice";
 import { fetchBrand } from "./reduxconfig/BrandSlice";
 import Signin from "./components/Signin";
@@ -16,8 +16,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import ViewCart from "./components/ViewCart";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Checkout from "./components/Checkout";
+const axiosApiInstance = axios.create();
 const App = ()=>{
+  const {token} = useSelector(state=>state.user.value);
   const dispatch = useDispatch();
+  axiosApiInstance.interceptors.request.use(function (config) {
+    console.log("interceptor called.......................");
+    config.headers = { 
+      'Authorization': ''+token,
+    }
+    return config;
+  }, function (error) {
+    console.log("error.......................");
+    return Promise.reject(error);
+  });
   useEffect(()=>{
     dispatch(fetchProduct());
     dispatch(fetchBrand());
